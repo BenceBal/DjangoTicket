@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 class Customer(models.Model):
-    objects = CoreProductManager()
+    objects = Core()
 
     class Meta:
         abstract: True
