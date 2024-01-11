@@ -1,0 +1,18 @@
+{% extends 'MainPage.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Checkout</h1>
+    <form action="{% url 'checkout' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="paymentMethod">Payment Method:</label>
+            <select class="form-control" id="paymentMethod" name="paymentMethod" required>
+                <option value="cash">Cash</option>
+                <option value="card">Card</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}

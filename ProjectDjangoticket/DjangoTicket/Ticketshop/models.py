@@ -2,8 +2,9 @@ from django.db import models
 from Pages.models import Ticket
 from DjangoTicket.settings import PRODUCT_MODEL
 import uuid
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
-# Create your models here.
 
 class BaseTicket(Ticket):
     class Meta:
@@ -42,4 +43,11 @@ class MyTicket(BaseTicket):
     def __str__(self):
         return f"{self.Ticketid}"  
  
+    @receiver(post_save, sender = Ticket)
+    def create_new_ticket(sender, instance, created, **kwargs):
+        if created:
+            instance.matchEvent.capacity -= 1
+            instance.matchEvent.save()
+            if instance.matchEvent.capacity > 0:
+                MyTicket.objects.create(price=instance.price, seasonCard=instance.seasonCard, matchEvent=instance.matchEvent)
 

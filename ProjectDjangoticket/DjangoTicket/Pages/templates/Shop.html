@@ -1,0 +1,102 @@
+<!--extending mainpage.html with this (see checkout.html) and cart doesnt work because it ruins the card image size completely, and with it the site.--> 
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>DjangoShop</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/shop.css' %}">
+</head>
+<body>
+
+	<header>
+		<nav class="navbar navbar-inverse" style="background-color: black;">
+		  <div class="container-fluid">
+			<div class="navbar-header">
+			  <a class="navbar-brand" href="#">Django Stadium</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li><a href="{% url 'main' %}">Home</a></li>
+				<li><a href="{% url 'myprofile' %}">My Profile</a></li>
+				<li><a href="{% url 'shop' %}">Tickets</a></li>
+				{% if user.is_authenticated %}
+				<li><a href="{% url 'cart' %}">Cart</a></li>
+				{% endif %}
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				{% if user.is_authenticated %}
+					<li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+				{% else %}
+					<li><a href="{% url 'register' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+					<li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+				{% endif %}
+			</ul>
+		  </div>
+		</nav>
+		</header>
+
+<section>
+
+
+	{% block content %}
+	<div class="container">
+		<h2>Tickets</h2>
+		<form method="post" action="{% url 'add_to_cart' %}">
+			{% csrf_token %}
+			{% for ticket in tickets %}
+			{% if user.is_authenticated %}
+			<div class="col-md-2 checkbox">
+				<input type="checkbox" class="checkbox" name="ticket" value="{{ ticket.Ticketid }}">
+			</div>
+			{% endif %}
+			<div class="card mb-3" style="max-width: 540px;">
+				<div class="row g-0">
+					<div class="col-md-4">
+						<img class="img-fluid rounded-start" src="https://www.theater-herne.de/fileadmin/_processed_/8/c/csm_Golden-Ticket_664f8d2f0b.jpg" alt="Ticket image">
+					</div>
+					<div class="col-md-6">
+						<div class="card-body">
+							<h5 class="card-title">{{ ticket.matchEvent.matchName }}</h5>
+							<p class="card-text">Preis: {{ ticket.price }}</p>
+							<div class="form-group">
+								<label for="section{{ ticket.Ticketid }}">Choose a section:</label>
+								<select class="form-control" id="section{{ ticket.Ticketid }}" name="section{{ ticket.Ticketid }}">
+									<option value="section1">A</option>
+									<option value="section2">B</option>
+									{% if request.ShopCustomer.fanClubMember %}
+									<option value="section3">Fan</option>
+									{% endif %}
+									<!-- Add more sections as needed -->
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			{% if user.is_authenticated %}
+    		<input type="submit" class="sticky-button" value="In den Warenkorb legen">
+		{% else %}
+    		<p>You must <a href="{% url 'login' %}">log in</a> to add items to the cart.</p>
+		{% endif %}
+		</form>
+	</div>
+	{% endblock %}
+</section>
+
+<footer style="position: fixed; left: 0; bottom: 0; width: 100%; padding: 0.5%; background-color: black; color: black; text-align: center;">
+        <div class="col-12 col-md">
+        <a href="#">Django Stadium</a>
+        <small class="d-block mb-3 text-muted">ITSB-B 2023 Software Design</small>
+        </div>
+</footer>
+
+
+</body>
+
+</html>

@@ -1,21 +1,24 @@
 from typing import List
-from django.db import models
 from Pages.services import IProductService
 from .models import MyTicket
 
-
-# this is the concrete implementation of the IProductService
 class ProductService(IProductService):
 
     def get_all_products(self) -> List[MyTicket]:
-        return MyTicket.objects.all()
+        return list(MyTicket.objects.all())
 
     def get_price(self, product: MyTicket) -> float:
-        # in another product app, the logic for getting the price could be different
         return product.price
 
-    def get_by_id(self, id: str) -> models.QuerySet:
+    def get_by_id(self, id: str) -> MyTicket:
+        queryset = MyTicket.objects.filter(Ticketid=id)
+        if queryset.exists():
+            return queryset.first()
+        else:
+            return None
+
+    def get_by_Ticketid(self, Ticketid: str) -> MyTicket:
         try:
-            return MyTicket.objects.get(id=id)
+            return MyTicket.objects.get(Ticketid=Ticketid)
         except MyTicket.DoesNotExist:
             return None

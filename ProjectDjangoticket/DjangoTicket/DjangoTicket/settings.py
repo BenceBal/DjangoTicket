@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Ticketshop',
     'Customers',
-    'Pages'
+    'Pages',
+    'Orders',
 ]
 
 MIDDLEWARE = [
@@ -119,6 +120,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+# STATIC_URL = 'Pages/static/'
+STATICFILES_DIRS = [BASE_DIR / "Pages/static"]
+# STATICFILES_DIRS = [BASE_DIR / 'Pages / static']
+# STATIC_ROOT = '/Root_static_files' 
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

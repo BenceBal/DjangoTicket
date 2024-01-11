@@ -1,13 +1,98 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <title>DjangoShop</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <h1>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione obcaecati dolore tenetur enim eos fugit, in facere ad expedita, ullam ut sunt, autem est maiores error nulla recusandae! Natus, dolorum.</h1>
-    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores dolorem hic assumenda quod suscipit sint corporis repellat explicabo eos eum iusto incidunt voluptates tempora, nobis consectetur atque, ratione natus magni.
+
+	<header>
+		<nav class="navbar navbar-inverse" style="background-color: black;">
+		  <div class="container-fluid">
+			<div class="navbar-header">
+			  <a class="navbar-brand" href="#">Django Stadium</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li><a href="{% url 'main' %}">Home</a></li>
+				<li><a href="{% url 'myprofile' %}">My Profile</a></li>
+				<li><a href="{% url 'shop' %}">Tickets</a></li>
+				{% if user.is_authenticated %}
+				<li><a href="{% url 'cart' %}">Cart</a></li>
+				{% endif %}
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				{% if user.is_authenticated %}
+					<li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+				{% else %}
+					<li><a href="{% url 'register' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+					<li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+				{% endif %}
+			</ul>
+		  </div>
+		</nav>
+		</header>
+
+<section>
+
+
+    {% block content %}
+	<div class="container">
+        <h1>Welcome to Our Football Ticket Sales Webshop!</h1>
+        <p>Experience the thrill of live football matches with the ease of securing your tickets online. Choose your favorite teams, select the best seats, and be a part of the action!</p>
+	</div>
+	<section id="featured-events" class="p-3 bg-light border border-secondary">
+		<h2>Featured Events</h2>
+		<div class="row">
+			<div class="col-md-3">
+				<div class="event-card card mb-3 d-flex align-items-center">
+					<img src="https://ncc.metu.edu.tr/sites/default/files/%C4%B1sa-football_0.png" alt="Event 1 Image" class="card-img-top" style="max-width: 20%; max-height: 20%;">
+					<div class="event-details card-body">
+						<h3 class="card-title">France vs Germany</h3>
+						<a href="{% url 'shop' %}" class="btn btn-primary">Get Tickets</a>
+					</div>
+				</div>
+			</div>
+	
+			<div class="col-md-3">
+				<div class="event-card card mb-3 d-flex align-items-center">
+					<img src="https://ncc.metu.edu.tr/sites/default/files/%C4%B1sa-football_0.png" alt="Event 2 Image" class="card-img-top" style="max-width: 20%; max-height: 20%;">
+					<div class="event-details card-body">
+						<h3 class="card-title">England vs Italy</h3>
+						<a href="{% url 'shop' %}" class="btn btn-primary">Get Tickets</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Add more featured events as needed -->
+	</section>
+	<section id="how-it-works" class="p-3 bg-light border border-secondary">
+        <h2>How It Works</h2>
+        <p>Our platform makes it simple to get your hands on the hottest football tickets. Follow these easy steps:</p>
+        <ol>
+            <li>Browse Matches: Explore our extensive list of upcoming football matches.</li>
+            <li>Select Seats: Choose the best seats in the stadium that suit your preferences and budget.</li>
+            <li>Secure Payment: Complete your purchase with our secure payment gateway.</li>
+            <li>Get Ready to Cheer: Receive your digital tickets and get ready to cheer for your favorite team!</li>
+        </ol>
+    </section>
+
+    {% endblock %}
+
+</section>
+
+<footer style="position: fixed; left: 0; bottom: 0; width: 100%; padding: 0.5%; background-color: black; color: black; text-align: center;">
+        <div class="col-12 col-md">
+        <a href="#">Django Stadium</a>
+        <small class="d-block mb-3 text-muted">ITSB-B 2023 Software Design</small>
+        </div>
+</footer>
+
 
 </body>
+
 </html>

@@ -1,0 +1,25 @@
+body {
+    background-image: url("/images/football-background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.modal-content {
+    background-color: lightgrey;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 0%;
+    text-align: center;
+}
+
+.modal-title {
+    color: black;
+}
+
+.modal-backdrop {
+    background-image: url("../images/football-background.jpg");
+    background-size: cover;
+}
