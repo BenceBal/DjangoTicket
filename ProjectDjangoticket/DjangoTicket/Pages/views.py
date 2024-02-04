@@ -71,7 +71,6 @@ def add_to_cart(request):
 
         for ticket_id in selected_tickets:
             ticket = MyTicket.objects.get(Ticketid=ticket_id)
-            seasonticket = SeasonTicket.objects.all()
             cart.append(str(ticket.Ticketid))
         for seasonticket_id in selected_seasontickets:
             seasonticket = SeasonTicket.objects.get(seasonTicketid=seasonticket_id)
@@ -129,16 +128,17 @@ def cancel_reservation(request, ticket_id):
 def buy_reservation(request,ticket_id):
     if request.method == 'POST':
         ticket_id = request.POST.get('ticket_id')
+        customer = get_object_or_404(ShopCustomer, personalid=request.user.customer.personalid)
         try:
-            ticket = MyTicket.objects.get(Ticketid=ticket_id, buyer=request.user.customer.personalid)
+            ticket = MyTicket.objects.get(Ticketid=ticket_id, buyer=customer)
         except MyTicket.DoesNotExist:
-            ticket = get_object_or_404(SeasonTicket, seasonTicketid=ticket_id, buyer=request.user.customer.personalid)
+            ticket = get_object_or_404(SeasonTicket, seasonTicketid=ticket_id, buyer=customer)
 
         # If the ticket is reserved, then it can be bought
         if ticket.reserved:
             ticket.bought = True
             ticket.reserved = False
-            ticket.buyer = request.user.customer.personalid
+            ticket.buyer = customer
             request.user.customer.reservations -= 1
             ticket.save()
             request.user.customer.save()
@@ -150,7 +150,9 @@ def myprofile(request):
     if request.user.is_authenticated: # otherwise doesnt appear the site well
       reserved_tickets = MyTicket.objects.filter(reserved=True, buyer=request.user.customer.personalid)
       bought_tickets = MyTicket.objects.filter(bought=True, buyer=request.user.customer.personalid)
+      bought_seasontickets = SeasonTicket.objects.filter(buyer=request.user.customer.personalid)
     else:
         bought_tickets = None
         reserved_tickets = None
-    return render(request, 'MyProfile.html', {'reserved_tickets': reserved_tickets, 'bought_tickets': bought_tickets})
+        bought_seasontickets = None
+    return render(request, 'MyProfile.html', {'reserved_tickets': reserved_tickets, 'bought_tickets': bought_tickets, 'bought_seasontickets': bought_seasontickets})

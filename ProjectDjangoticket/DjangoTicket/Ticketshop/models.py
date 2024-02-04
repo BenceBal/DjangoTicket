@@ -34,7 +34,7 @@ class Match(models.Model):
 class MatchStadium(models.Model):
     capacity = models.IntegerField(default=30)
     section = models.CharField(max_length=2, default="A")
-    matchname = models.ForeignKey(Match, on_delete=models.PROTECT)
+    matchname = models.ForeignKey(Match, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.matchname} // {self.section}"
@@ -45,7 +45,6 @@ class SeasonTicket(models.Model):
     name = models.CharField(max_length=30)
     price = models.IntegerField(default=300)
     bought = models.BooleanField(default=False)
-    reserved = models.BooleanField(default=False)
     buyer = models.ForeignKey(ShopCustomer, on_delete=models.PROTECT, null=True, blank=True)
 
     def __str__(self):

@@ -93,7 +93,7 @@
 			{% for seasonticket in seasontickets %}
 			{% if user.is_authenticated %}
 			<div class="col-md-2 checkbox">
-				<input type="checkbox" class="checkbox" name="seasonticket" value="{{ ticket.SeasonTicketid }}">
+				<input type="checkbox" class="checkbox" name="seasonticket" value="{{ ticket.seasonTicketid }}">
 			</div>
 			{% endif %}
 			<div class="card mb-3" style="max-width: 540px;">
@@ -116,7 +116,7 @@
 			<nav class="navbar navbar-light bg-light sticky-top">
 				<div class="container-fluid justify-content-end">
 					{% if user.is_authenticated %}
-					<input type="submit" class="btn btn-primary" value="In den Warenkorb legen">
+					<input type="submit" class="btn btn-primary" value="Add to cart">
 					{% else %}
 					<p>You must <a href="{% url 'login' %}">log in</a> to add items to the cart.</p>
 					{% endif %}

@@ -5,8 +5,8 @@ from Customers.models import *
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField()
-    age = forms.IntegerField()
-    fanclub_id = forms.CharField()
+    age = forms.IntegerField(required=False)
+    fanclub_id = forms.CharField(required=False)
     PersonalID = forms.CharField()
     firstName = forms.CharField(max_length=255)
     lastName = forms.CharField(max_length=255)

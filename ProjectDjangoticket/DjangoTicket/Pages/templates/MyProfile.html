@@ -41,9 +41,23 @@
                 {% endfor %}
               </table>
 
-
-              <h2>Reserved Tickets</h2>
+              <h2>Bought Season Tickets</h2>
               <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Season</th>
+                    </tr>
+                  </thead>
+                  {% for seasonticket in bought_seasontickets %}
+                  <tr>
+                      <th scope="row">{{ forloop.counter }}</th>
+                      <td>{{ seasonticket.name }}</td>
+                  </tr>
+                  {% endfor %}
+                </table>
+                {% if user.customer.seasonticketholder %}
+                <table class="table">
                   <thead>
                     <tr>
                       <th scope="col">#</th>
@@ -53,6 +67,8 @@
                       <th scope="col"></th>
                     </tr>
                   </thead>
+
+                  <h2>Reserved Tickets</h2>
                   {% for ticket in reserved_tickets %}
                   <tr>
                       <th scope="row">{{ forloop.counter }}</th>
@@ -76,6 +92,11 @@
                   </tr>
                   {% endfor %}
                 </table>
+                {% else %}
+                  <p>Buy a Season Ticket to be able to reserve tickets!</p>
+                {% endif %}
+
+              
         {% else %}
             <p>You must <a href="{% url 'login' %}">log in</a> to view your profile.</p>
         {% endif %}
