@@ -1,0 +1,25 @@
+{% extends 'MainPage.html' %}
+
+<section>
+    {% block content %}
+    <div class="container">
+        {% if user.is_authenticated %}
+            <h2>Mein Profil</h2>
+            <p>Benutzername: {{ user.username }}</p>
+            <p>Personal ID: {{ user.customer.personalid }}</p>
+            <p>Vorname: {{ user.customer.firstName }}</p>
+            <p>Nachname: {{ user.customer.lastName }}</p>
+            <p>Alter: {{ user.customer.age }}</p>
+            <p>Beitrittsdatum: {{ user.customer.joined }}</p>
+            <p>Fan Club Mitglied: {{ user.customer.fanClubMember }}</p>
+            <p>Fan Club Mitglieds-ID: {{ user.customer.fanClubMemberid }}</p>
+        {% else %}
+            <p>You must <a href="{% url 'login' %}">log in</a> to view your profile.</p>
+        {% endif %}
+    </div>
+    {% endblock %}
+</section>
+
+</body>
+
+</html>

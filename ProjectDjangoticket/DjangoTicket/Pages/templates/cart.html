@@ -38,17 +38,17 @@
 		</nav>
 		</header>
 
-<section>
+<section style=" padding: 0.5%; margin-bottom: 2%;">
 
 
 	{% block content %}
 	<div class="container">
 		<h2>Warenkorb</h2>
-		<form method="post" action="{% url 'cart' %}">
+		<form method="post" action="{% url 'checkout' %}">
 			{% csrf_token %}
 			{% for product in products %}
 			<div class="col-md-2 checkbox">
-				<input type="checkbox" class="checkbox" name="ticket" value="{{ ticket.Ticketid }}">
+				<input type="checkbox" class="checkbox" name="ticket_{{ product.Ticketid }}" value="{{ product.Ticketid }}">
 			</div>
 			<div class="card mb-3" style="max-width: 540px;">
 				<div class="row g-0">
@@ -57,8 +57,9 @@
 					</div>
 					<div class="col-md-6">
 						<div class="card-body">
-							<h5 class="card-title">{{ product.matchEvent.matchName }}</h5>
+							<h5 class="card-title">{{ product.matchEvent.matchname }}</h5>
 							<p class="card-text">Preis: {{ product.price }}</p>
+							<p class="card-text">Section: {{ product.matchEvent.section }}</p>
 						</div>
 					</div>
 				</div>
@@ -66,11 +67,21 @@
 			{% empty %}
 			<p>Kein Produkt im Warenkorb.</p>
 			{% endfor %}
-			<input type="submit" class="sticky-button" value="Löschen">
+			<div style="display: flex; margin-top: 0.5%; margin-right: 0.5%;">
+				<input type="submit" class="btn btn-primary" name="action" value="Delete">
+				<input type="submit" class="btn btn-primary" name="action" value="Buy" style="margin-left: 0.5%;">
+				<input type="submit" class="btn btn-primary" name="action" value="Reserve" style="margin-left: 0.5%;">
+			</div>
 		</form>
-		<form method="get" action="{% url 'checkout' %}">
-			<input type="submit" class="sticky-button" value="Zur Kasse">
-		</form>
+		{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+		</div>
+	</div>
 	</div>
 	{% endblock %}
 

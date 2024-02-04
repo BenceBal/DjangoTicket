@@ -1,18 +1,81 @@
 {% extends 'MainPage.html' %}
+{% load static %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock %}
 <section>
     {% block content %}
     <div class="container">
         {% if user.is_authenticated %}
-            <h2>Mein Profil</h2>
-            <p>Benutzername: {{ user.username }}</p>
-            <p>Personal ID: {{ user.customer.personalid }}</p>
-            <p>Vorname: {{ user.customer.firstName }}</p>
-            <p>Nachname: {{ user.customer.lastName }}</p>
-            <p>Alter: {{ user.customer.age }}</p>
-            <p>Beitrittsdatum: {{ user.customer.joined }}</p>
-            <p>Fan Club Mitglied: {{ user.customer.fanClubMember }}</p>
-            <p>Fan Club Mitglieds-ID: {{ user.customer.fanClubMemberid }}</p>
+            <div class="row">
+                <div class="col-md-4">
+                  <h1>Welcome, {{ user.username }}!</h1>
+                    <h2>Mein Profil</h2>
+                    <p><strong>Benutzername:</strong> {{ user.username }}</p>
+                    <p><strong>Personal ID:</strong> {{ user.customer.personalid }}</p>
+                    <p><strong>Vorname:</strong> {{ user.customer.firstName }}</p>
+                    <p><strong>Nachname:</strong> {{ user.customer.lastName }}</p>
+                    <p><strong>Alter:</strong> {{ user.customer.age }}</p>
+                    <p><strong>Beitrittsdatum:</strong> {{ user.customer.joined }}</p>
+                    <p><strong>Fan Club Mitglieds-ID:</strong> {{ user.customer.fanClubMemberid }}</p>
+                </div>
+                <div class="col-md-8">
+                    <h2>Bought Tickets</h2>
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Ticket ID</th>
+                    <th scope="col">Matchname</th>
+                    <th scope="col">Event Time</th>
+                  </tr>
+                </thead>
+                {% for ticket in bought_tickets %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ ticket.Ticketid }}</td>
+                    <td>{{ ticket.matchEvent.matchname }}</td>                    
+                    <td>{{ ticket.matchEvent.matchname.eventTime }}</td>
+                </tr>
+                {% endfor %}
+              </table>
+
+
+              <h2>Reserved Tickets</h2>
+              <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Ticket ID</th>
+                      <th scope="col">Matchname</th>
+                      <th scope="col">Event Time</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  {% for ticket in reserved_tickets %}
+                  <tr>
+                      <th scope="row">{{ forloop.counter }}</th>
+                      <td>{{ ticket.Ticketid }}</td>
+                      <td>{{ ticket.matchEvent.matchname }}</td>                    
+                      <td>{{ ticket.matchEvent.matchname.eventTime }}</td>
+                      <td>
+                    <form method="post" action="{% url 'buy_reservation' ticket.Ticketid %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="ticket_id" value="{{ ticket.Ticketid }}">
+                        <input type="submit" value="Buy">
+                    </form>
+                    </td>
+                    <td>
+                        <form method="post" action="{% url 'cancel_reservation' ticket.Ticketid %}">
+                          {% csrf_token %}
+                          <input type="hidden" name="ticket_id" value="{{ ticket.Ticketid }}">
+                          <input type="submit" value="Cancel Reservation" onclick="return confirm('Are you sure you want to cancel this reservation?');">
+                      </form>
+                      </td>
+                  </tr>
+                  {% endfor %}
+                </table>
         {% else %}
             <p>You must <a href="{% url 'login' %}">log in</a> to view your profile.</p>
         {% endif %}

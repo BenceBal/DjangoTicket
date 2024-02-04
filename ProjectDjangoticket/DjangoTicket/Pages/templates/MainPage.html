@@ -41,36 +41,26 @@
 
 
     {% block content %}
-	<div class="container">
+	<div class="container mt-3 mb-3 border p-3">
         <h1>Welcome to Our Football Ticket Sales Webshop!</h1>
         <p>Experience the thrill of live football matches with the ease of securing your tickets online. Choose your favorite teams, select the best seats, and be a part of the action!</p>
 	</div>
-	<section id="featured-events" class="p-3 bg-light border border-secondary">
+	<section id="featured-events" style="margin: 20px; padding: 20px;">
 		<h2>Featured Events</h2>
 		<div class="row">
-			<div class="col-md-3">
-				<div class="event-card card mb-3 d-flex align-items-center">
-					<img src="https://ncc.metu.edu.tr/sites/default/files/%C4%B1sa-football_0.png" alt="Event 1 Image" class="card-img-top" style="max-width: 20%; max-height: 20%;">
-					<div class="event-details card-body">
-						<h3 class="card-title">France vs Germany</h3>
-						<a href="{% url 'shop' %}" class="btn btn-primary">Get Tickets</a>
-					</div>
-				</div>
-			</div>
-	
-			<div class="col-md-3">
-				<div class="event-card card mb-3 d-flex align-items-center">
-					<img src="https://ncc.metu.edu.tr/sites/default/files/%C4%B1sa-football_0.png" alt="Event 2 Image" class="card-img-top" style="max-width: 20%; max-height: 20%;">
-					<div class="event-details card-body">
-						<h3 class="card-title">England vs Italy</h3>
-						<a href="{% url 'shop' %}" class="btn btn-primary">Get Tickets</a>
-					</div>
-				</div>
-			</div>
+		{% for match in matches %}
+    		<div class="col-md-2">
+        		<div class="event-card card mb-3 d-flex align-items-center">
+            	<img src="https://ncc.metu.edu.tr/sites/default/files/%C4%B1sa-football_0.png" alt="{{ match.Matchname }} Image" class="card-img-top" style="max-width: 20%; max-height: 20%;">
+            	<div class="event-details card-body">
+                	<h3 class="card-title">{{ match.matchName }}</h3>
+                	<p>{{ match.eventTime }}</p>
+                	<a href="{% url 'shop' %}" class="btn btn-primary">Get Tickets</a>
+            	</div>
+        		</div>
+    		</div>
+	{% endfor %}
 		</div>
-		<!-- Add more featured events as needed -->
-	</section>
-	<section id="how-it-works" class="p-3 bg-light border border-secondary">
         <h2>How It Works</h2>
         <p>Our platform makes it simple to get your hands on the hottest football tickets. Follow these easy steps:</p>
         <ol>

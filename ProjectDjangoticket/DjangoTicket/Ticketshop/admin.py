@@ -1,16 +1,20 @@
 from django.contrib import admin
-from .models import MyTicket, SeasonTicket, Match
+from .models import *
 
 # Register your models here.
 
 @admin.register(MyTicket)
-class PersonAdmin(admin.ModelAdmin):
-    pass
+class MyTicketAdmin(admin.ModelAdmin):
+    save_as = True  # Enable 'Save as new' button
 
 @admin.register(SeasonTicket)
-class PersonAdmin(admin.ModelAdmin):
-    pass
+class SeasonTicketAdmin(admin.ModelAdmin):
+    save_as = True  
 
 @admin.register(Match)
-class PersonAdmin(admin.ModelAdmin):
-    pass
+class MatchAdmin(admin.ModelAdmin):
+    save_as = True  
+
+@admin.register(MatchStadium)
+class MatchAdmin(admin.ModelAdmin):
+    save_as = True  

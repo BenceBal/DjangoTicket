@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Order</title>
+</head>
+<body>
+    <h1>Create Order</h1>
+    <form method="post" action="{% url 'Orders:create_order' %}">
+        {% csrf_token %}
+        <label for="customer_id">Select Customer:</label>
+        <select name="customer_id" id="customer_id">
+            {% for customer in customers %}
+            <option value="{{ customer.personalid }}">{{ customer.firstName }} {{ customer.lastName }}</option>
+            {% endfor %}
+        </select><br>
+        
+        <label>Select Tickets:</label><br>
+        {% for ticket in tickets %}
+        <input type="checkbox" name="ticket_ids" value="{{ ticket.id }}"> {{ ticket.Ticketid }}<br>
+        {% endfor %}
+        
+        <button type="submit">Create Order</button>
+    </form>
+</body>
+</html>
