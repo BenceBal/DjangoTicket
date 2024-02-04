@@ -62,14 +62,6 @@ def cart(request):
     products = MyTicket.objects.filter(Ticketid__in=cart)
     return render(request, 'cart.html', {'products': products})
 
-@login_required
-def order_view(request):
-    if request.method == 'POST':
-        request.session['cart'] = request.POST
-    products = MyTicket.objects.all()
-    products = SeasonTicket.objects.all()
-    return render(request, 'order.html', {'products': products})
-
 @login_required    
 def add_to_cart(request):
     if request.method == 'POST':
@@ -85,24 +77,6 @@ def add_to_cart(request):
             seasonticket = SeasonTicket.objects.get(seasonTicketid=seasonticket_id)
             cart.append(str(seasonticket.seasonTicketid))
         request.session['cart'] = cart
-    return redirect('cart')
-
-@login_required
-def remove_from_cart(request):
-    if request.method == 'POST':
-        ticket_id = request.POST.get('ticket_id')
-        try:
-            ticket = get_object_or_404(MyTicket, Ticketid=ticket_id)
-        except MyTicket.DoesNotExist:
-            # Handle the case where the ticket is not found
-            # You can redirect to an error page or display a message
-            return HttpResponse("Ticket not found", status=404)
-
-        cart = request.session.get('cart', [])
-        if str(ticket.Ticketid) in cart:
-            cart.remove(str(ticket.Ticketid))
-        request.session['cart'] = cart
-        request.session.modified = True
     return redirect('cart')
 
 
@@ -132,7 +106,7 @@ def checkout(request):
                     ticket.bought = False                
                     ticket.buyer = customer
                     customer.reservations += 1
-
+                # DELETE extra isnt called, because a Ticket is deleted in every method from the cart
                 ticket.save()
                 customer.save()
                 if str(ticket.Ticketid) in cart:
@@ -173,7 +147,7 @@ def buy_reservation(request,ticket_id):
 
 
 def myprofile(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated: # otherwise doesnt appear the site well
       reserved_tickets = MyTicket.objects.filter(reserved=True, buyer=request.user.customer.personalid)
       bought_tickets = MyTicket.objects.filter(bought=True, buyer=request.user.customer.personalid)
     else:

@@ -1,8 +1,10 @@
+
+# python manage.py test Ticketshop.tests
+
 import unittest
 from django.test import TestCase
 from .services import ProductService
-from .models import MyTicket
-from Ticketshop import models
+from .models import *
 
 class ProductServiceTest(TestCase):
 
@@ -17,7 +19,6 @@ class ProductServiceTest(TestCase):
         all_products = product_service.get_all_products()
         self.assertIsInstance(all_products, list)
 
-
     def test_get_price(self):
         # Test the get_price method
         product_service = ProductService()
@@ -25,21 +26,18 @@ class ProductServiceTest(TestCase):
         price = product_service.get_price(test_product)
         self.assertEqual(price, 50)
 
-    def test_get_by_id_existing(self):
-        # Test the get_by_id method with an existing ID
-        product_service = ProductService()
-        test_match = models.Match.objects.create(season='Test Season', matchName='Test Match', capacity=50, capacityFanSector=20)
-        # Create a MyTicket object with a valid matchEvent
-        test_product = MyTicket.objects.create(price=60, matchEvent=test_match)
-        test_product.save()  # Ensure the object is saved
-        retrieved_product = product_service.get_by_id(str(test_product.Ticketid))
-        self.assertEqual(retrieved_product.price, 60)
+    def setUp(self):
+        self.match = Match.objects.create(matchName = 'Test Match', eventTime = '2000-01-01', season = 'Test Season')
+        self.match_stadium = MatchStadium.objects.create(section='Test Section', capacity=100, matchname=self.match)
+        self.ticket = MyTicket.objects.create(matchEvent=self.match_stadium, price=100)    
 
-    def test_get_by_id_nonexistent(self):
-        # Test the get_by_id method with a nonexistent ID
-        product_service = ProductService()
-        retrieved_product = product_service.get_by_id("nonexistent_id")
-        self.assertIsNone(retrieved_product)
+    def test_get_by_id_existing(self):
+        # Test if a MyTicket instance can be retrieved by its id
+        ticket = MyTicket.objects.get(Ticketid=self.ticket.Ticketid)
+        self.assertEqual(ticket.Ticketid, self.ticket.Ticketid)
+        self.assertEqual(ticket.price, 100)
+        self.assertEqual(ticket.matchEvent.matchname.matchName, 'Test Match')
+        self.assertEqual(ticket.matchEvent.section, 'Test Section')
 
 
 

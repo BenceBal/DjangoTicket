@@ -1,3 +1,2 @@
-from django.shortcuts import render
 
-# Create your views here.
+# Views are in Pages/views.py which is the main app

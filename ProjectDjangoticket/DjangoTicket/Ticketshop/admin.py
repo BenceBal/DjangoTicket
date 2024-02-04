@@ -15,6 +15,8 @@ class SeasonTicketAdmin(admin.ModelAdmin):
 class MatchAdmin(admin.ModelAdmin):
     save_as = True  
 
+# For Use Case 2,  was save_as added
+
 @admin.register(MatchStadium)
 class MatchAdmin(admin.ModelAdmin):
     save_as = True  
