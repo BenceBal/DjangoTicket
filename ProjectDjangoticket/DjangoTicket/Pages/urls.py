@@ -14,5 +14,6 @@ urlpatterns = [
     path('checkout/', views.checkout, name='checkout'),
     path('cancel_reservation/<str:ticket_id>/', views.cancel_reservation, name='cancel_reservation'),
     path('buy_reservation/<str:ticket_id>/', views.buy_reservation, name='buy_reservation'),
-    path('accounts/login/', views.mylogin, name='login'),
+    path('accounts/login/', views.mylogin, name='login'), # Login page redirection for prohibit @login_required to break the website
 ]
+

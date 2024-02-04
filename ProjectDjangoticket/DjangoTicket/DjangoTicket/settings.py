@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'Ticketshop',
     'Customers',
     'Pages',
-    'Orders',
 ]
 
 MIDDLEWARE = [
